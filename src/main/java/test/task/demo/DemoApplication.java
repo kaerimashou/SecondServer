@@ -15,6 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import test.task.model.Document;
 import test.task.repository.DocumentRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 @ComponentScan("test.task")
 @EnableJpaRepositories("test.task.repository")
@@ -38,18 +41,17 @@ public class DemoApplication {
     public RestTemplate restTemplate(RestTemplateBuilder builder){
         return builder.build();
     }
-
-    @Bean
-    public CommandLineRunner run(RestTemplate restTemplate)throws Exception{
-        return args->{
-            Document[] list=restTemplate.getForObject("http://localhost:8090/rest/all", Document[].class);
-            for (Document d:
-                 list) {
-                log.info(String.valueOf(d.toString()));
-                documentRepository.save(d);
-            }
-
-        };
-    }
+//
+//    @Bean
+//    public CommandLineRunner run(RestTemplate restTemplate)throws Exception{
+//        return args->{
+//            List<Document> list=restTemplate.getForObject("http://localhost:8090/rest/all", ArrayList.class);
+//            for (Document d:
+//                 list) {
+//                log.info(String.valueOf(d.toString()));
+//                documentRepository.save(d);
+//            }
+//        };
+//    }
 
 }
