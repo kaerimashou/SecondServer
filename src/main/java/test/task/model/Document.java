@@ -10,23 +10,23 @@ import java.util.Date;
 public class Document {
     @Id
     @NotNull
-    @Column(name="docguid")
+    @Column(name = "docguid")
     private String docGUID;
 
     @NotNull
-    @Column(name="docnum")
+    @Column(name = "docnum")
     private Long docNum;
 
     @NotNull
-    @Column(name="docdate")
+    @Column(name = "docdate")
     private Date docDate;
 
     @NotNull
-    @Column(name="opertype")
+    @Column(name = "opertype")
     private Integer operType;
 
     @NotNull
-    @Column(name="amountout")
+    @Column(name = "amountout")
     private Double amountOut;
 
     @NotNull
@@ -66,7 +66,7 @@ public class Document {
     private BankInfo bankReceiverInfo;
 
     @NotNull
-    @Column(name="purpose")
+    @Column(name = "purpose")
     private String purpose;
 
     public Document() {

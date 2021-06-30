@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import test.task.model.Document;
 
 @Repository
-public interface DocumentRepository extends JpaRepository<Document,Integer> {
+public interface DocumentRepository extends JpaRepository<Document, Integer> {
 }
