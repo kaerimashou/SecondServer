@@ -3,12 +3,9 @@ package test.task.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 import test.task.model.Document;
-import test.task.repository.DocumentRepository;
+import test.task.service.AppService;
 
 import java.util.Arrays;
 
@@ -16,25 +13,17 @@ import java.util.Arrays;
 @RequestMapping("/save")
 public class SaveController {
 
-    private final DocumentRepository repository;
-    private final RestTemplate restTemplate;
+
+    private final AppService appService;
 
     @Autowired
-    public SaveController(RestTemplate restTemplate, DocumentRepository documentRepository) {
-        this.restTemplate = restTemplate;
-        this.repository = documentRepository;
+    public SaveController(AppService appService) {
+        this.appService = appService;
     }
 
     @PostMapping("/upload")
-    public int saveToDb() {
-        Document[] list = restTemplate.getForObject("http://localhost:8090/rest/all", Document[].class);
-        Arrays.stream(list).forEach(repository::save);
-        return list.length;
-    }
-
-    @GetMapping()
-    public String savedFiles(Model model) {
-        model.addAttribute("size", saveToDb());
-        return "report";
+    public String saveToDb(@RequestBody Document[] list, Model model) {
+        appService.save(Arrays.asList(list));
+        return "redirect:/save";
     }
 }
