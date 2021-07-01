@@ -1,16 +1,33 @@
 package test.task.model;
 
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Embeddable
+@Entity
+@Table(name = "participant")
 public class ParticipantInfo implements Serializable {
 
+    @Id
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "inn")
     private Long inn;
 
+    @Column(name = "kpp")
     private Long kpp;
 
+    @Column(name = "name")
     private String name;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    public Long getId() {
+        return id;
+    }
 
     public Long getInn() {
         return inn;

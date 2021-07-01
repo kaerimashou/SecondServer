@@ -1,16 +1,24 @@
 package test.task.model;
 
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-@Embeddable
+@Entity
+@Table(name="bank")
 public class BankInfo implements Serializable {
 
+    @Id
+    @Column(name="id")
+    private Long id;
+
+    @Column(name="bank_account")
     private BigInteger BAcc;
 
+    @Column(name="bic")
     private Long bic;
 
+    @Column(name="treasury_account")
     private BigInteger TAcc;
 
     public BigInteger getBAcc() {
@@ -35,6 +43,15 @@ public class BankInfo implements Serializable {
 
     public void setTAcc(BigInteger TAcc) {
         this.TAcc = TAcc;
+    }
+
+    @Id
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

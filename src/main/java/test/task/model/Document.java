@@ -9,7 +9,10 @@ import java.util.Date;
 @Table(name = "document")
 public class Document {
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
+    private Long id;
+
     @Column(name = "docguid")
     private String docGUID;
 
@@ -29,40 +32,20 @@ public class Document {
     @Column(name = "amountout")
     private Double amountOut;
 
-    @NotNull
-    @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "inn", column = @Column(name = "payer_inn")),
-            @AttributeOverride(name = "kpp", column = @Column(name = "payer_kpp")),
-            @AttributeOverride(name = "name", column = @Column(name = "payer_name"))
-    })
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="payer_id",nullable = false)
     private ParticipantInfo payerInfo;
 
-    @NotNull
-    @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "BAcc", column = @Column(name = "payer_bank_account")),
-            @AttributeOverride(name = "bic", column = @Column(name = "payer_bic")),
-            @AttributeOverride(name = "TAcc", column = @Column(name = "payer_treasury_account"))
-    })
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="payer_bank_id",nullable = false)
     private BankInfo bankPayerInfo;
 
-    @NotNull
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "inn", column = @Column(name = "receiver_inn")),
-            @AttributeOverride(name = "kpp", column = @Column(name = "receiver_kpp")),
-            @AttributeOverride(name = "name", column = @Column(name = "receiver_name"))
-    })
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="receiver_id",nullable = false)
     private ParticipantInfo receiverInfo;
 
-    @NotNull
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "BAcc", column = @Column(name = "receiver_bank_account")),
-            @AttributeOverride(name = "bic", column = @Column(name = "receiver_bic")),
-            @AttributeOverride(name = "TAcc", column = @Column(name = "receiver_treasury_account"))
-    })
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="receiver_bank_id",nullable = false)
     private BankInfo bankReceiverInfo;
 
     @NotNull
@@ -71,6 +54,14 @@ public class Document {
 
     public Document() {
 
+    }
+    @Id
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPurpose() {
@@ -168,4 +159,6 @@ public class Document {
                 ", purpose='" + purpose + '\'' +
                 '}';
     }
+
+
 }
