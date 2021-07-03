@@ -9,7 +9,9 @@ import java.math.BigInteger;
 public class BankInfo implements Serializable {
 
     @Id
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id",unique = true, nullable = false,insertable = true,updatable = false)
     private Long id;
 
     @Column(name="bank_account")
@@ -45,7 +47,6 @@ public class BankInfo implements Serializable {
         this.TAcc = TAcc;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

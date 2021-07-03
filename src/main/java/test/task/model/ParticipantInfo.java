@@ -8,14 +8,16 @@ import java.io.Serializable;
 public class ParticipantInfo implements Serializable {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id",unique = true, nullable = false,insertable = true,updatable = false)
     private Long id;
 
     @Column(name = "inn")
-    private Long inn;
+    private String inn;
 
     @Column(name = "kpp")
-    private Long kpp;
+    private String kpp;
 
     @Column(name = "name")
     private String name;
@@ -24,24 +26,23 @@ public class ParticipantInfo implements Serializable {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }
 
-    public Long getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(Long inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
-    public Long getKpp() {
+    public String getKpp() {
         return kpp;
     }
 
-    public void setKpp(Long kpp) {
+    public void setKpp(String kpp) {
         this.kpp = kpp;
     }
 

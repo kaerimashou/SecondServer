@@ -1,21 +1,22 @@
 package test.task.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import test.task.model.Document;
+import test.task.model.DocumentPOJO;
 import test.task.service.implementation.AppServiceImpl;
 
-import java.util.Arrays;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/save")
 public class SaveController {
 
     private final AppServiceImpl appServiceImpl;
+
 
     @Autowired
     public SaveController(AppServiceImpl appServiceImpl) {
@@ -23,8 +24,8 @@ public class SaveController {
     }
 
     @PostMapping("/upload")
-    public String saveToDb(@RequestBody Document[] list, Model model) {
-        appServiceImpl.save(Arrays.asList(list));
-        return "redirect:/save";
+    public void saveToDb(@RequestBody List<DocumentPOJO> list) {
+        appServiceImpl.save(list);
+//        list.forEach(System.out::println);
     }
 }

@@ -9,53 +9,66 @@ import java.util.Date;
 @Table(name = "document")
 public class Document {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id",unique = true, nullable = false,insertable = true,updatable = false)
     private Long id;
 
-    @Column(name = "docguid")
+    @Column(name = "doc_guid")
     private String docGUID;
 
     @NotNull
-    @Column(name = "docnum")
+    @Column(name = "doc_num")
     private Long docNum;
 
     @NotNull
-    @Column(name = "docdate")
+    @Column(name = "doc_date")
     private Date docDate;
 
     @NotNull
-    @Column(name = "opertype")
+    @Column(name = "oper_type")
     private Integer operType;
 
     @NotNull
-    @Column(name = "amountout")
+    @Column(name = "amount_out")
     private Double amountOut;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="payer_id",nullable = false)
+    @JoinColumn(name="payer_id",referencedColumnName = "id",nullable = false)
     private ParticipantInfo payerInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="payer_bank_id",nullable = false)
+    @JoinColumn(name="payer_bank_id",referencedColumnName = "id",nullable = false)
     private BankInfo bankPayerInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="receiver_id",nullable = false)
+    @JoinColumn(name="receiver_id",referencedColumnName = "id",nullable = false)
     private ParticipantInfo receiverInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="receiver_bank_id",nullable = false)
+    @JoinColumn(name="receiver_bank_id",referencedColumnName = "id",nullable = false)
     private BankInfo bankReceiverInfo;
 
     @NotNull
     @Column(name = "purpose")
     private String purpose;
 
+    public Document(String docGUID,Long docNum,Date docDate,Integer operType,Double amountOut,ParticipantInfo payerInfo,BankInfo bankPayerInfo,ParticipantInfo receiverInfo,BankInfo bankReceiverInfo,String purpose) {
+        this.docGUID=docGUID;
+        this.docNum=docNum;
+        this.docDate=docDate;
+        this.operType=operType;
+        this.amountOut=amountOut;
+        this.payerInfo=payerInfo;
+        this.bankPayerInfo=bankPayerInfo;
+        this.receiverInfo=receiverInfo;
+        this.bankReceiverInfo=bankReceiverInfo;
+    }
+
     public Document() {
 
     }
-    @Id
+
     public Long getId() {
         return id;
     }
