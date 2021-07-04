@@ -10,7 +10,7 @@ public class ParticipantInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id",unique = true, nullable = false,insertable = true,updatable = false)
+    @Column(name = "id", unique = true, nullable = false, insertable = true, updatable = false)
     private Long id;
 
     @Column(name = "inn")

@@ -1,8 +1,6 @@
 package test.task.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import test.task.model.Document;
 import test.task.model.DocumentPOJO;
@@ -34,7 +32,7 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public void save(DocumentPOJO documentPOJO) {
-        if(!documentRepository.existsByDocGUIDAndDocNum(documentPOJO.getDocGUID(), documentPOJO.getDocNum())){
+        if (!documentRepository.existsByDocGUIDAndDocNum(documentPOJO.getDocGUID(), documentPOJO.getDocNum())) {
             Document document = new Document();
             document.setDocGUID(documentPOJO.getDocGUID());
             document.setDocDate(documentPOJO.getDocDate());

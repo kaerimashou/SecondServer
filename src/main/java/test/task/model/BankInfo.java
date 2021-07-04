@@ -5,22 +5,22 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 @Entity
-@Table(name="bank")
+@Table(name = "bank")
 public class BankInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id",unique = true, nullable = false,insertable = true,updatable = false)
+    @Column(name = "id", unique = true, nullable = false, insertable = true, updatable = false)
     private Long id;
 
-    @Column(name="bank_account")
+    @Column(name = "bank_account")
     private BigInteger BAcc;
 
-    @Column(name="bic")
+    @Column(name = "bic")
     private Long bic;
 
-    @Column(name="treasury_account")
+    @Column(name = "treasury_account")
     private BigInteger TAcc;
 
     public BigInteger getBAcc() {
