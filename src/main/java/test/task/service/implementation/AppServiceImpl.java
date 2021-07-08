@@ -9,7 +9,9 @@ import test.task.repository.DocumentRepository;
 import test.task.repository.ParticipantRepository;
 import test.task.service.AppService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("appService")
 public class AppServiceImpl implements AppService {
@@ -18,11 +20,14 @@ public class AppServiceImpl implements AppService {
     private final BankRepository bankRepository;
     private final ParticipantRepository participantRepository;
 
+    private final StatisticsServiceImpl statisticsService;
+
     @Autowired
-    public AppServiceImpl(DocumentRepository documentRepository, BankRepository bankRepository, ParticipantRepository participantRepository) {
+    public AppServiceImpl(DocumentRepository documentRepository, BankRepository bankRepository, ParticipantRepository participantRepository, StatisticsServiceImpl statisticsService) {
         this.documentRepository = documentRepository;
         this.bankRepository = bankRepository;
         this.participantRepository = participantRepository;
+        this.statisticsService = statisticsService;
     }
 
     @Override
@@ -81,7 +86,14 @@ public class AppServiceImpl implements AppService {
                 }
             }
             documentRepository.save(document);
+            statisticsService.updateStatistics();
         }
+    }
 
+    public Map<String, Double> getStatistics() {
+        Map<String, Double> stat = new HashMap<>();
+        stat.put("count", statisticsService.getDocAmount());
+        stat.put("avgSum", statisticsService.getAvgSum());
+        return stat;
     }
 }

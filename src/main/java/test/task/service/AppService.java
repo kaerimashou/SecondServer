@@ -8,4 +8,6 @@ public interface AppService {
     void save(List<DocumentPOJO> list);
 
     void save(DocumentPOJO documentPOJO);
+
+
 }

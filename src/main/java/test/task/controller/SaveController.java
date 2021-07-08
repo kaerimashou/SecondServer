@@ -1,30 +1,31 @@
 package test.task.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import test.task.model.DocumentPOJO;
 import test.task.service.implementation.AppServiceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/save")
 public class SaveController {
 
-    private final AppServiceImpl appServiceImpl;
-
+    private final AppServiceImpl appService;
 
     @Autowired
-    public SaveController(AppServiceImpl appServiceImpl) {
-        this.appServiceImpl = appServiceImpl;
+    public SaveController(AppServiceImpl appService) {
+        this.appService = appService;
     }
 
     @PostMapping("/upload")
     public void saveToDb(@RequestBody List<DocumentPOJO> list) {
-        appServiceImpl.save(list);
-//        list.forEach(System.out::println);
+        appService.save(list);
+    }
+
+    @GetMapping("/report")
+    public Map<String, Double> getStatistics() {
+        return appService.getStatistics();
     }
 }
