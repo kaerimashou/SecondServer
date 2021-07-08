@@ -90,6 +90,7 @@ public class AppServiceImpl implements AppService {
         }
     }
 
+    @Override
     public Map<String, Double> getStatistics() {
         Map<String, Double> stat = new HashMap<>();
         stat.put("count", statisticsService.getDocAmount());
