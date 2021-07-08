@@ -3,6 +3,7 @@ package test.task.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import test.task.model.DocumentPOJO;
+import test.task.model.ReportProjection;
 import test.task.service.implementation.AppServiceImpl;
 
 import java.util.List;
@@ -24,8 +25,18 @@ public class SaveController {
         appService.save(list);
     }
 
-    @GetMapping("/report")
-    public Map<String, Number> getStatistics() {
+    @GetMapping("/statistics")
+    public Map<String, Object> getStatistics() {
         return appService.getStatistics();
+    }
+
+    @GetMapping("/report/{id}")
+    public ReportProjection getReport(@PathVariable Long id) {
+        return appService.getParticipantInfo(id);
+    }
+
+    @GetMapping("/report")
+    public List<ReportProjection> getReportAll() {
+        return appService.getAllParticipantInfo();
     }
 }

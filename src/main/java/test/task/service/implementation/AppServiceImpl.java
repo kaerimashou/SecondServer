@@ -2,8 +2,7 @@ package test.task.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import test.task.model.Document;
-import test.task.model.DocumentPOJO;
+import test.task.model.*;
 import test.task.repository.BankRepository;
 import test.task.repository.DocumentRepository;
 import test.task.repository.ParticipantRepository;
@@ -33,6 +32,7 @@ public class AppServiceImpl implements AppService {
     @Override
     public void save(List<DocumentPOJO> documentList) {
         documentList.forEach(this::save);
+        statisticsService.updateStatistics();
     }
 
     @Override
@@ -46,55 +46,56 @@ public class AppServiceImpl implements AppService {
             document.setAmountOut(documentPOJO.getAmountOut());
             document.setPurpose(documentPOJO.getPurpose());
 
-            //setting bankPayerInfo
-            if (bankRepository.countAllByBic(documentPOJO.getBankPayerInfo().getBic()) >= 1L) {
-                document.setBankPayerInfo(bankRepository.findTopByBic(documentPOJO.getBankPayerInfo().getBic()));
-            } else {
-                document.setBankPayerInfo(documentPOJO.getBankPayerInfo());
-                bankRepository.save(documentPOJO.getBankPayerInfo());
-            }
+            saveBank(documentPOJO.getBankPayerInfo(), document);
+            saveBank(documentPOJO.getBankReceiverInfo(), document);
 
-            //setting bankReceiverInfo
-            if (bankRepository.countAllByBic(documentPOJO.getBankReceiverInfo().getBic()) >= 1L) {
-                document.setBankReceiverInfo(bankRepository.findTopByBic(documentPOJO.getBankPayerInfo().getBic()));
-            } else {
-                document.setBankReceiverInfo(documentPOJO.getBankReceiverInfo());
-                bankRepository.save(documentPOJO.getBankReceiverInfo());
-            }
-
-            //setting payerInfo
-            if (participantRepository.countAllByInnAndKpp(documentPOJO.getPayerInfo().getInn(), documentPOJO.getPayerInfo().getKpp()) >= 1L) {
-                document.setPayerInfo(participantRepository.findTopParticipantInfoByInnAndKpp(documentPOJO.getPayerInfo().getInn(), documentPOJO.getPayerInfo().getKpp()));
-            } else {
-                if (participantRepository.countAllByName(documentPOJO.getPayerInfo().getName()) >= 1L) {
-                    document.setPayerInfo(participantRepository.findTopParticipantInfoByName(documentPOJO.getPayerInfo().getName()));
-                } else {
-                    document.setPayerInfo(documentPOJO.getPayerInfo());
-                    participantRepository.save(documentPOJO.getPayerInfo());
-                }
-            }
-
-            //setting receiverInfo
-            if (participantRepository.countAllByInnAndKpp(documentPOJO.getReceiverInfo().getInn(), documentPOJO.getReceiverInfo().getKpp()) >= 1L) {
-                document.setReceiverInfo(participantRepository.findTopParticipantInfoByInnAndKpp(documentPOJO.getReceiverInfo().getInn(), documentPOJO.getReceiverInfo().getKpp()));
-            } else {
-                if (participantRepository.countAllByName(documentPOJO.getReceiverInfo().getName()) >= 1L) {
-                    document.setReceiverInfo(participantRepository.findTopParticipantInfoByName(documentPOJO.getReceiverInfo().getName()));
-                } else {
-                    document.setReceiverInfo(documentPOJO.getReceiverInfo());
-                    participantRepository.save(documentPOJO.getReceiverInfo());
-                }
-            }
+            saveParticipant(documentPOJO.getReceiverInfo(), document);
+            saveParticipant(document.getPayerInfo(), document);
             documentRepository.save(document);
-            statisticsService.updateStatistics();
+        }
+    }
+
+    private void saveParticipant(ParticipantInfo participant, Document document) {
+        //setting receiver and payer info
+        if (participantRepository.countAllByInnAndKpp(participant.getInn(), participant.getKpp()) >= 1L) {
+            document.setReceiverInfo(participantRepository.findTopParticipantInfoByInnAndKpp(participant.getInn(), participant.getKpp()));
+        } else {
+            if (participantRepository.countAllByName(participant.getName()) >= 1L) {
+                document.setReceiverInfo(participantRepository.findTopParticipantInfoByName(participant.getName()));
+            } else {
+                document.setReceiverInfo(participant);
+                participantRepository.save(participant);
+            }
+        }
+    }
+
+    private void saveBank(BankInfo bank, Document document) {
+        //setting bank info of receiver or payer
+        if (bankRepository.countAllByBic(bank.getBic()) >= 1L) {
+            document.setBankReceiverInfo(bankRepository.findTopByBic(bank.getBic()));
+        } else {
+            document.setBankReceiverInfo(bank);
+            bankRepository.save(bank);
         }
     }
 
     @Override
-    public Map<String, Number> getStatistics() {
-        Map<String, Number> stat = new HashMap<>();
+    public Map<String, Object> getStatistics() {
+        Map<String, Object> stat = new HashMap<>();
         stat.put("count", statisticsService.getDocAmount());
         stat.put("avgSum", statisticsService.getAvgSum());
         return stat;
     }
+
+    @Override
+    public ReportProjection getParticipantInfo(Long id) {
+        return statisticsService.getParticipantInfo(id);
+    }
+
+    @Override
+    public List<ReportProjection> getAllParticipantInfo() {
+        return statisticsService.getAllParticipantInfo();
+    }
+
+
 }

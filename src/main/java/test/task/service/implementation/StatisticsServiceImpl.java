@@ -2,10 +2,12 @@ package test.task.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import test.task.model.ReportProjection;
 import test.task.repository.DocumentRepository;
 import test.task.service.StatisticsService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service("statisticsService")
 public class StatisticsServiceImpl implements StatisticsService {
@@ -33,5 +35,15 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void updateStatistics() {
         docAmount = documentRepository.countAll();
         avgSum = documentRepository.getAvgSum();
+    }
+
+    @Override
+    public ReportProjection getParticipantInfo(Long id) {
+        return documentRepository.getParticipantInfo(id);
+    }
+
+    @Override
+    public List<ReportProjection> getAllParticipantInfo() {
+        return documentRepository.getParticipantInfoAll();
     }
 }
