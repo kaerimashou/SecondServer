@@ -25,7 +25,7 @@ public class SaveController {
     }
 
     @GetMapping("/report")
-    public Map<String, Double> getStatistics() {
+    public Map<String, Number> getStatistics() {
         return appService.getStatistics();
     }
 }

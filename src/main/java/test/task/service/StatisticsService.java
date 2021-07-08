@@ -1,9 +1,11 @@
 package test.task.service;
 
-public interface StatisticsService {
-    Double getDocAmount();
+import java.math.BigDecimal;
 
-    Double getAvgSum();
+public interface StatisticsService {
+    Long getDocAmount();
+
+    BigDecimal getAvgSum();
 
     void updateStatistics();
 }

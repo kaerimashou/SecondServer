@@ -5,12 +5,14 @@ import org.springframework.stereotype.Service;
 import test.task.repository.DocumentRepository;
 import test.task.service.StatisticsService;
 
+import java.math.BigDecimal;
+
 @Service("statisticsService")
 public class StatisticsServiceImpl implements StatisticsService {
     private final DocumentRepository documentRepository;
 
-    private Double docAmount;
-    private Double avgSum;
+    private Long docAmount;
+    private BigDecimal avgSum;
 
     @Autowired
     public StatisticsServiceImpl(DocumentRepository documentRepository) {
@@ -18,12 +20,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Double getDocAmount() {
+    public Long getDocAmount() {
         return docAmount;
     }
 
     @Override
-    public Double getAvgSum() {
+    public BigDecimal getAvgSum() {
         return avgSum;
     }
 

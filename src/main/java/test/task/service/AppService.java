@@ -10,5 +10,5 @@ public interface AppService {
 
     void save(DocumentPOJO documentPOJO);
 
-    Map<String, Double> getStatistics();
+    Map<String, Number> getStatistics();
 }
